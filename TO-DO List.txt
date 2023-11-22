@@ -25,12 +25,3 @@ Availability Management:
  Consultants should have an interface to set their availability. 
  This includes defining working hours, breaks, and days off.
 
-Technology Stack:
-
-Your project should be developed exclusively using the following technologies. 
-While it's not mandatory to incorporate every language from the stack, 
-your solution should be crafted within the confines of these specified tools:
-
-Frontend: HTML, CSS, React
-Backend: Node.js, JavaScript, PHP
-Database: MySQL
