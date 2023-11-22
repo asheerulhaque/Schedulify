@@ -1,0 +1,36 @@
+Project Requirements:
+Your task is to design and implement a web application with the following features:
+
+User-Facing Features:
+
+Calendar View: 
+ Users should be able to view a calendar with available time slots for appointments. 
+ The calendar should display all days of the month. The calendar should be set up to show the entire month at a glance, 
+ just like the easy-to-understand calendar you see on platforms like Calendly.
+
+Booking: 
+ Users should be able to select an available time slot and book an appointment.
+
+Confirmation Email: 
+ Upon booking confirmation, an email should be sent to the user confirming the appointment details.
+
+Google Calendar Integration:
+ An event should be created in the consultant's Google Calendar upon successful booking. 
+ The user should be added as a guest to the event so they receive event notifications.
+
+Consultant-Facing Features:
+
+
+Availability Management: 
+ Consultants should have an interface to set their availability. 
+ This includes defining working hours, breaks, and days off.
+
+Technology Stack:
+
+Your project should be developed exclusively using the following technologies. 
+While it's not mandatory to incorporate every language from the stack, 
+your solution should be crafted within the confines of these specified tools:
+
+Frontend: HTML, CSS, React
+Backend: Node.js, JavaScript, PHP
+Database: MySQL
