@@ -1,11 +1,14 @@
 import React from 'react';
-import Testing from './components/testing_api';
+import {CardComponent} from './components/CardComponent'
+import './App.css';
 
 function App() {
-  return (
+
+   return (
     <div className="App">
-          < Testing />
-          
+      <div>
+        <CardComponent />
+      </div>
     </div>
   );
 }
