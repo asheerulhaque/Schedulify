@@ -5,7 +5,6 @@
 @import "tailwindcss/utilities";
 
 /* Your custom styles go here */
-
-body {
-  background: url('./static/Animated\ Shape.svg');
+html {
+  scroll-behavior: smooth;
 }

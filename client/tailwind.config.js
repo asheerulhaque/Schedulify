@@ -4,6 +4,7 @@ module.exports = {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
     "node_modules/keep-react/**/*.{js,jsx,ts,tsx}",
+    'node_modules/flowbite-react/lib/esm/**/*.js',
   ],
-  presets: [require('keep-react/src/keep-preset')],
+  presets: [require('keep-react/src/keep-preset'), require('flowbite/plugin')],
 };

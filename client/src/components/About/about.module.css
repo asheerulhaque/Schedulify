@@ -1,0 +1,35 @@
+
+.AboutTitle{
+  font-family: 'NunitoSans';
+  font-size: 3rem;
+  font-weight: bolder;
+  text-align: center; 
+  color: #3e363f;
+  
+}
+
+.AboutContent{
+  font-family: 'NunitoSans';
+  font-size: 1.3rem;
+  font-weight:300;
+  text-align: center; 
+  margin: 5rem;
+  margin-top: 0;
+  margin-bottom: 0;
+  
+}
+/* YourStyles.module.css */
+
+.AboutContainer {
+  display: flex;
+  align-items: center;
+  height: auto;
+}
+
+.AboutContentContainer {
+  flex: 1;
+}
+
+.ImageContainer {
+  flex: 1;
+}
