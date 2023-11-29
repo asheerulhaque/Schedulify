@@ -69,7 +69,7 @@ def signup():
     if not add_user(username, email, password):
         Status = {
             'status': 'error',
-            'message': 'User with the same username or email already exists'
+            'message': 'User with the same username or email already exists!'
         }
         return jsonify(Status)
     else:
