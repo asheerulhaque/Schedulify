@@ -12,3 +12,6 @@ def config(section='postgresql'):
         raise Exception(f"Section '{section}' not found in the configuration file.")
 
     return db_conf
+
+if __name__ == '__main__':
+    config()
