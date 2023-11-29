@@ -5,6 +5,7 @@ import Background from "../../../static/images/animated_shape.png";
 import FormControl from "@mui/material/FormControl";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import PasswordIcon from "@mui/icons-material/Lock";
+import EmailIcon from "@mui/icons-material/Email";
 import IconButton from "@mui/material/IconButton";
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
@@ -51,11 +52,8 @@ function UserLogin() {
     paddingLeft: "1rem",
   };
 
-
-
   const [showPassword, setShowPassword] = useState(false); // For password visibility
   const [loginMode, setLoginMode] = useState(true); // true for login, false for signup
-
   const [formData, setFormData] = useState({
     username: "",
     emailId: "",
@@ -70,7 +68,7 @@ function UserLogin() {
 
   const handleToggleMode = () => {
     setLoginMode((prevMode) => !prevMode);
-     setFormData({ username: "", emailId: "", password: "" }); // Clear form data
+    setFormData({ username: "", emailId: "", password: "" }); // Clear form data
   };
 
   const handleInputChange = (field, value) => {
@@ -79,62 +77,107 @@ function UserLogin() {
       [field]: value
     }));
   }; // Update form data on input change
- 
- const getFormAction = () => {
-  return loginMode
-    ? "http://192.168.1.2:5000/user/signin"
-    : "http://192.168.1.2:5000/user/signup";
-}; // Get form action based on login mode
 
-const handleFormSubmit = async (e) => {
-  e.preventDefault();
-  const { username, emailId, password } = formData;
 
-  const requestBody = loginMode
-    ? { username, password }
-    : { username, emailId, password };
+const validateEmailId = () => {
+  const emailRegex = /^$|^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
+  const isValidEmail = emailRegex.test(formData.emailId);
+  return isValidEmail;
+}; // Validate email address
 
-  const requestOptions = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(requestBody),
-  };
+const validateUsername = () => {
+  const usernameRegex = /^$|^[a-zA-Z0-9+_.-]+$/;
+  const isValidUsername = usernameRegex.test(formData.username);
+  return isValidUsername;
+}; // Validate username
 
-  try {
-    const response = await fetch(getFormAction(), requestOptions);
+const validatePassword = () => {
+  const passwordRegex = /^$|^[a-zA-Z0-9+_.-]+$/;
+  const isValidPassword = passwordRegex.test(formData.password);
+  return isValidPassword;
+}; // Validate password
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
+  const getFormAction = () => {
+    return loginMode
+      ? "/user/signin"
+      : "/user/signup";
+  }; // Get form action based on login mode
 
-    const responseData = await response.json();
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    const { username, emailId, password } = formData;
 
-    if(loginMode){
-      if( responseData.status === "success" ){
-        navigate("/dashboard");
-      }
-      else{
-        alert("Invalid Credentials");
-      }
-    }
-    else{
-      if( responseData.status === "success" ){
-        navigate("/dashboard");
-      }
-      else{
-        alert("Username or Email Id already exists");
-      }
-    } 
     
+    if(!loginMode){
+      const isValidEmail = validateEmailId(emailId);
+      if (!isValidEmail) {
+        alert("Invalid email address");
+        document.getElementById("emailId").focus();
+        return;
+      }
+    }
+    
+    const isValidUsername = validateUsername(username);
+    if (!isValidUsername) {
+      alert("Invalid username");
+      document.getElementById("username").focus();
+      return;
+    }
 
-    setFormData({ username: "", emailId: "", password: "" });
-  } catch (error) {
-    console.error("Error during form submission:", error);
-    // Handle errors (e.g., display an error message to the user)
-  }
-}; // Handle form submission
+    const isValidPassword = validatePassword(password);
+    if (!isValidPassword) {
+      alert("Invalid password");
+      document.getElementById("password").focus();
+      return;
+    }
+
+    const requestBody = loginMode
+      ? { username, password }
+      : { username, emailId, password };
+
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
+    };
+
+    try {
+      const response = await fetch(getFormAction(), requestOptions);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const responseData = await response.json();
+
+      if (loginMode) {
+        if (responseData.status === "success") {
+          navigate("/dashboard");
+        }
+        else {
+          alert(`Error: ${responseData.message}`);
+
+        }
+      }
+      else {
+        if (responseData.status === "success") {
+          navigate("/dashboard");
+        }
+        else {
+          alert(`Error: ${responseData.message}`);
+
+        }
+      }
+
+
+      setFormData({ username: "", emailId: "", password: "" });
+    } catch (error) {
+      console.error("Error during form submission:", error);
+      alert("Error: Cannot submit form. Please try again later.");
+    }
+  }; // Handle form submission
 
 
 
@@ -143,30 +186,40 @@ const handleFormSubmit = async (e) => {
       <NavbarComponent ShowMenuOptions={true} />
       <div className="flex flex-col items-center justify-center" style={divStyle}>
         <form onSubmit={handleFormSubmit}
-        className="flex flex-col items-center justify-center">
-            
+          className="flex flex-col items-center justify-center">
+
           <div style={formStyle}>
-            <div style={{display:'flex', flexDirection:'column', paddingTop:'1.7em',paddingBottom:'2rem'}}>
-                <h1 style={{ color: LabelColor, fontWeight: "bold", fontSize:'3em' }}>
-                    Welcome,
-                </h1>
-                <p>{loginMode ? "Sign In to continue" : "Sign Up to continue"}!</p>
+            <div style={{ display: 'flex', flexDirection: 'column', paddingTop: '1.7em', paddingBottom: '2rem' }}>
+              <h1 style={{ color: LabelColor, fontWeight: "bold", fontSize: '3em' }}>
+                Welcome,
+              </h1>
+              <p>{loginMode ? "Sign In to continue" : "Sign Up to continue"}!</p>
             </div>
             <div style={InputStyle}>
               <AccountCircle sx={{ color: LabelColor, mr: 1, my: 0.5 }} />
               <FormControl sx={{ width: "15em" }} variant="standard">
                 <InputLabel htmlFor="username">Username</InputLabel>
-                <Input id="username" name="username" value={formData.username}
-              onChange={(e) => handleInputChange("username", e.target.value)}/>
+                <Input
+                  id="username"
+                  name="username"
+                  value={formData.username}
+                  onChange={(e) => handleInputChange("username", e.target.value)}
+                  required
+                />
               </FormControl>
             </div>
             {!loginMode && ( // Render email field only for signup mode
               <div style={InputStyle}>
-                <PasswordIcon sx={{ color: LabelColor, mr: 1, my: 0.5 }} />
+                <EmailIcon sx={{ color: LabelColor, mr: 1, my: 0.5 }} />
                 <FormControl sx={{ width: "15em" }} variant="standard">
                   <InputLabel htmlFor="emailId">Email Id</InputLabel>
-                  <Input id="emailId" name="emailId" value={formData.emailId}
-                onChange={(e) => handleInputChange("emailId", e.target.value)} />
+                  <Input 
+                    id="emailId" 
+                    name="emailId" 
+                    value={formData.emailId}
+                    onChange={(e) => handleInputChange("emailId", e.target.value)} 
+                    required
+                  />
                 </FormControl>
               </div>
             )}
@@ -179,7 +232,7 @@ const handleFormSubmit = async (e) => {
                   name="password"
                   type={showPassword ? "text" : "password"}
                   value={formData.password}
-                     onChange={(e) => handleInputChange("password", e.target.value)}
+                  onChange={(e) => handleInputChange("password", e.target.value)}
                   endAdornment={
                     <InputAdornment position="end">
                       <IconButton
@@ -192,6 +245,7 @@ const handleFormSubmit = async (e) => {
                       </IconButton>
                     </InputAdornment>
                   }
+                  required
                 />
               </FormControl>
             </div>
@@ -219,7 +273,7 @@ const handleFormSubmit = async (e) => {
                 {loginMode
                   ? "Don't have an account? "
                   : "Already have an account? "}
-                    <span  style={{ cursor:'pointer', color:'#0088e4' , fontWeight:'500' }} onClick={handleToggleMode}>
+                  <span style={{ cursor: 'pointer', fontWeight: '500' }} className="text-cyan-500 hover:underline" onClick={handleToggleMode}>
                   {loginMode ? "Sign Up" : "Sign In"}
                 </span>
               </p>
