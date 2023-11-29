@@ -1,21 +1,20 @@
 import React from 'react';
-import {CardComponent} from './components/RoleCards/CardComponent'
-import { NavbarComponent } from './components/Navbar/Navbar';
-import About from './components/About/about';
-import FooterSection from './components/Footer/footer';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Home from './components/Home/home'
+import User from './components/Login/UserLogin/UserLogin'
 import './App.css';
 
 function App() {
 
    return (
+    <Router>
     <div className="App">
-      <div>
-        <NavbarComponent />
-        <About />
-        <CardComponent />
-        <FooterSection />
-      </div>
+      <Routes>
+        <Route path="/" element={<Home/>}/>
+        <Route path='/User' element={<User/>}/>
+      </Routes>
     </div>
+    </Router>
   );
 }
 
