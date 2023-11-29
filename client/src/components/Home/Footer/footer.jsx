@@ -1,6 +1,6 @@
 import { Footer } from 'flowbite-react';
 import { BsGithub, BsInstagram, BsTwitter } from 'react-icons/bs';
-import Logo from '../../static/logo/logo.png';
+import Logo from '../../../static/logo/logo.png';
 
 const theme = {
   backgroundColor: 'white',
