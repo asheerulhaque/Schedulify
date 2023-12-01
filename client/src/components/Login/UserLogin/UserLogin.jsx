@@ -14,6 +14,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import config from "../../../config";
 
 function UserLogin() {
 
@@ -99,8 +100,8 @@ const validatePassword = () => {
 
   const getFormAction = () => {
     return loginMode
-      ? "/user/signin"
-      : "/user/signup";
+      ? `${config.api_url}/user/signin`
+      : `${config.api_url}/user/signup`;
   }; // Get form action based on login mode
 
   const handleFormSubmit = async (e) => {
@@ -154,7 +155,7 @@ const validatePassword = () => {
 
       if (loginMode) {
         if (responseData.status === "success") {
-          navigate("/dashboard");
+          navigate("/user/dashboard");
         }
         else {
           alert(`Error: ${responseData.message}`);
@@ -163,7 +164,7 @@ const validatePassword = () => {
       }
       else {
         if (responseData.status === "success") {
-          navigate("/dashboard");
+          navigate("/user/dashboard");
         }
         else {
           alert(`Error: ${responseData.message}`);
@@ -183,7 +184,7 @@ const validatePassword = () => {
 
   return (
     <div>
-      <NavbarComponent ShowMenuOptions={true} />
+      <NavbarComponent ShowLoginOptions={true} />
       <div className="flex flex-col items-center justify-center" style={divStyle}>
         <form onSubmit={handleFormSubmit}
           className="flex flex-col items-center justify-center">

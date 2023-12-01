@@ -1,13 +1,12 @@
 from flask import *
 from database.db_conn import connect
-from flask_cors import CORS
+from flask_cors import *
 from credentials.usermgt import add_user
 from credentials.auth import authenticate
 
 app = Flask(__name__)
 app.secret_key = "Schedulify"
-# Allow requests only from the React development server
-CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+cors = CORS(app, resources={r"*": {"origins": "*"}})
 
 method_type = ['GET', 'POST']
 
@@ -15,14 +14,14 @@ method_type = ['GET', 'POST']
 def get_data():
     connection = connect()
     if connection:
-        data = {
+        response = jsonify({
             'message': 'Connected to the database!'
-        }
-        return jsonify(data)
+        }), 200 # 200 is the status code for OK
+        return response
     
     else:    
-        error_data = {'error': 'Unable to connect to the database'}
-        return jsonify(error_data), 500
+        response = jsonify({'error': 'Unable to connect to the database'})
+        return response, 500 # 500 is the status code for internal server error
 
 
 @app.route('/user/signin', methods=method_type)
@@ -30,25 +29,24 @@ def signin():
     UserData = request.get_json()
     print(UserData)
     if UserData is None:
-        Status = {
+        response = jsonify({
             'status':'error',
             'message': 'No data received'
-        }
-        return jsonify(Status)
+        }), 400 # 400 is the status code for bad request
+        return response
     username = UserData['username']
     password = UserData['password']
-    
     if not authenticate(username,password):
-        Status = {
+        response = jsonify({
                 'status':'error',
                 'message':'Invalid username or password'
-            }
-        return jsonify(Status)
+            }), 401 # 401 is the status code for unauthorized
+        return response
 
-    Status = {
+    response = jsonify({
         'status':'success'
-    }
-    return jsonify(Status)
+    }), 200
+    return response
     
 
 
@@ -57,34 +55,34 @@ def signup():
     UserData = request.get_json()
     print(UserData)
     if UserData is None:
-        Status = {
+        response = jsonify({
             'status':'error',
             'message': 'No data received'
-        }
-        return jsonify(Status)
+        }), 400
+        return response
     
     username = UserData['username']
     email = UserData['emailId']
     password = UserData['password']
     if not add_user(username, email, password):
-        Status = {
+        response = jsonify({
             'status': 'error',
             'message': 'User with the same username or email already exists!'
-        }
-        return jsonify(Status)
+        }), 409 # 409 is the status code for conflict
+        return response
     else:
         try:
             add_user(username,email,password)
         except:
-            Status ={
+            response =jsonify({
                 'status':'error'
-            }
-            return jsonify(Status)
+            }) , 500 
+            return response
         
-        Status = {
+        response = jsonify({
             'status':'success'
-        }
-        return jsonify(Status)
+        }) , 200
+        return response
     
 
 

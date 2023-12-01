@@ -7,7 +7,7 @@ import NavbarComponent from "./Navbar/Navbar";
 function Home() {
     return (
         <div>
-            <NavbarComponent />
+            <NavbarComponent ShowHomeOptions={true}/>
             <About />
             <CardComponent />
             <FooterSection />
